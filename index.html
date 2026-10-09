@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Proton-Programmed Non-Volatile Optical Weights on Silicon Nitride (WIP)</title>
-<meta name="description" content="Work-in-progress, pre-experimental proposal for proton-programmed non-volatile optical weights on silicon nitride, with a public verification ledger and tombstones.">
-<meta property="og:title" content="Proton-Programmed Non-Volatile Optical Weights on Silicon Nitride (WIP)">
-<meta property="og:description" content="Pre-experimental proposal with a public verification ledger. No device data; all figures are literature values.">
+<title>Could Protons Program a Low-Loss Optical Weight on Silicon Nitride? (WIP)</title>
+<meta name="description" content="Work-in-progress, pre-experimental decomposition of the hypothesis that protons could program a low-loss, non-volatile optical weight on silicon nitride, with a public verification ledger and tombstones.">
+<meta property="og:title" content="Could Protons Program a Low-Loss Optical Weight on Silicon Nitride? (WIP)">
+<meta property="og:description" content="A decomposed, untested hypothesis with a public verification ledger. No device data; all figures are literature values.">
 <meta property="og:type" content="article">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%234B3F94'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23F4F6F7'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +18,7 @@
     --nitride: #4B3F94; --nitride-soft: #E7E4F4;
     --wip-ink: #7A4A00; --wip-bg: #FFF1D6;
     --ok: #2C6449; --ok-bg: #E2F1E8; --pend: #8A4B00; --pend-bg: #FBEBD3;
+    --card: #FFFFFF;
     --serif: "Literata", Georgia, "Times New Roman", serif;
     --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
     box-sizing: border-box;
@@ -28,20 +29,20 @@
     :root:not([data-theme="light"]) {
       --paper: #161B22; --ink: #E6EAEE; --muted: #A9B4BF; --rule: #38424D;
       --nitride: #B4AAF0; --nitride-soft: #2A2647; --wip-ink: #FFD592; --wip-bg: #3A2B10;
-      --ok: #9FDDB9; --ok-bg: #1D3428; --pend: #FFC98A; --pend-bg: #3B2A14;
+      --ok: #9FDDB9; --ok-bg: #1D3428; --pend: #FFC98A; --pend-bg: #3B2A14; --card: #1C222B;
     }
   }
   :root[data-theme="dark"] {
     --paper: #161B22; --ink: #E6EAEE; --muted: #A9B4BF; --rule: #38424D;
     --nitride: #B4AAF0; --nitride-soft: #2A2647; --wip-ink: #FFD592; --wip-bg: #3A2B10;
-    --ok: #9FDDB9; --ok-bg: #1D3428; --pend: #FFC98A; --pend-bg: #3B2A14;
+    --ok: #9FDDB9; --ok-bg: #1D3428; --pend: #FFC98A; --pend-bg: #3B2A14; --card: #1C222B;
   }
   *, *::before, *::after { box-sizing: inherit; }
   html { scroll-padding-top: env(safe-area-inset-top, 0px); }
   body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--serif); font-size: 1.0625rem; line-height: 1.7; }
   main { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
   h1, h2, h3 { font-family: var(--sans); font-weight: 600; line-height: 1.25; }
-  h1 { font-size: 1.9rem; margin: 0 0 0.75rem; letter-spacing: -0.01em; }
+  h1 { font-size: 1.8rem; margin: 0 0 0.75rem; letter-spacing: -0.01em; }
   h2 { font-size: 1.3rem; margin: 2.75rem 0 0.75rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
   h3 { font-size: 1.05rem; margin: 1.5rem 0 0.5rem; }
   p { margin: 0 0 1rem; }
@@ -57,6 +58,12 @@
   .v { font-family: var(--sans); font-size: 0.75rem; font-weight: 600; text-decoration: none; padding: 0.05rem 0.3rem; margin-left: 0.15rem; border-radius: 3px; vertical-align: 0.2em; white-space: nowrap; }
   .v.ok { background: var(--ok-bg); color: var(--ok); }
   .v.pend { background: var(--pend-bg); color: var(--pend); }
+  .link { background: var(--card); border: 1px solid var(--rule); border-left: 4px solid var(--nitride); padding: 0.9rem 1rem; margin: 0 0 1rem; }
+  .link h3 { margin: 0 0 0.5rem; }
+  .link p { margin: 0 0 0.6rem; font-size: 1rem; }
+  .link p:last-child { margin-bottom: 0; }
+  .label { font-family: var(--sans); font-weight: 600; font-size: 0.85rem; color: var(--muted); display: block; }
+  .status-open { font-family: var(--sans); font-size: 0.8rem; font-weight: 600; color: var(--pend); background: var(--pend-bg); padding: 0.1rem 0.4rem; border-radius: 3px; }
   .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; }
   table { border-collapse: collapse; width: 100%; min-width: 42rem; font-family: var(--sans); font-size: 0.85rem; line-height: 1.45; }
   th, td { text-align: left; vertical-align: top; padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--rule); }
@@ -73,138 +80,161 @@
   .tomb .id { font-family: var(--sans); font-weight: 600; font-size: 0.9rem; }
   .struck { text-decoration: line-through; color: var(--muted); }
   ul.log { padding-left: 1.2rem; font-size: 0.95rem; }
+  .dek { font-size: 1.1rem; line-height: 1.6; margin: 0 0 1.25rem; }
+  ol.flow { padding-left: 1.4rem; }
+  ol.flow li { margin-bottom: 0.35rem; }
   footer { margin-top: 3rem; font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
 </style>
 </head>
 <body>
 <main>
 
-<h1>Proton-Programmed Non-Volatile Optical Weights on Silicon Nitride</h1>
-<p class="version">Version 0.2 — abstract, Claim Block, verification ledger and tombstones only</p>
+<h1>Could Protons Program a Low-Loss Optical Weight on Silicon Nitride?</h1>
+<p class="version">Version 0.4 — a decomposed hypothesis and experiment-prioritization case study</p>
+<p class="dek">This document is not a feasibility claim. It breaks one untested photonic-memory hypothesis into the links that would all have to hold, ties each link to its nearest published evidence, and ranks the experiments that could falsify it, cheapest first.</p>
 
 <div class="wip" role="note">
-  <strong>Work in progress.</strong> This is a pre-experimental proposal and literature positioning. It reports no device data. Every number on this page is a published literature value, never a demonstrated result of this work. Every reference has been resolved to its title and claimed authors; open content items are listed in the ledger. This page has not yet had a human archive pass.
+  <strong>Work in progress.</strong> This is a pre-experimental decomposition of an untested hypothesis, not a device proposal and not a claim that the device would work. It reports no device data. Every number on this page is a published literature value, never a result of this work. Most of the cited evidence concerns lithium rather than protons, visible rather than 1550&nbsp;nm light, electrostatic rather than electrochemical doping, or calculation rather than measurement; each use is labelled. This page has not yet had a human archive pass.
 </div>
 
 <div class="claim">
   <h3>Claim Block</h3>
-  <p><strong>The single claim that, if false, makes this work worthless:</strong> a monolayer transition-metal dichalcogenide on a silicon nitride waveguide, doped by protons from a sealed solid-state reservoir, holds its optical phase shift at open circuit while keeping |Δn/Δk| well above 10 at 1550&nbsp;nm.</p>
-  <p><strong>Who can check it:</strong> no literature source answers it; only the decisive experiment can. The supporting gap claim (that no proton-programmed waveguide weight has been published) can be checked in the literature, but only to the extent of the search scope stated in the abstract.</p>
+  <p><strong>The single claim that, if false, makes this work worthless:</strong> there is a range of proton doping in which a monolayer transition-metal dichalcogenide changes its refractive index near 1550&nbsp;nm while adding little absorption, and the doping can be both reversed and held at open circuit.</p>
+  <p><strong>Who can check it:</strong> no literature source located answers it; only experiment can. This page breaks it into six links (Section 3) and states which is cheapest to test first.</p>
 </div>
 
-<h2 id="abstract">Abstract</h2>
-<p class="wip-inline">WIP · draft 2 · pending human archive pass</p>
-<p>Storing neural-network weights directly in the optical layer of a photonic accelerator would remove the repeated weight fetch from electronic memory. Three families of non-volatile photonic weight have been demonstrated on integrated waveguides: phase-change materials; ferroelectric barium titanate, which provides analogue, non-volatile phase tuning with no absorption change<a class="v ok" href="#V1">V1</a>; and copper-ion ferroionic two-dimensional heterostructures on silicon nitride and silicon microrings, one of which reports 8-bit multilevel storage with projected retention beyond ten years<a class="v ok" href="#V2">V2</a>.</p>
-<p>Proton programming of optical properties is established outside integrated photonics. A thin-film solid-state proton pump retains its optical state at open circuit<a class="v ok" href="#V3">V3</a>, and room-temperature, all-solid-state protonation switches the infrared transmittance of vanadium dioxide in a non-volatile manner<a class="v ok" href="#V4">V4</a>. In a targeted literature search covering English-language sources and regional passes on Korea, Japan, China and Europe, we did not find a waveguide-integrated optical weight programmed by protons. The same search suggests why a direct approach is unpromising: in the two hosts examined, hydrogenated tungsten oxide and hydrogenated perovskite nickelates, proton loading is reported to change absorption alongside the refractive index, although the nickelate data located so far are at long-wave infrared rather than 1550&nbsp;nm<a class="v pend" href="#V5">V5</a>.</p>
-<p>We therefore propose a split architecture in which protons store the state and a separate low-loss layer carries the optics: a sealed solid proton reservoir; a single-layer hexagonal boron nitride membrane, a structure reported to improve retention in proton-based electrochemical memory<a class="v ok" href="#V6">V6</a>; and a monolayer transition-metal dichalcogenide on a silicon nitride microring, a platform in which ionic-liquid gating of monolayer WS<sub>2</sub> produced |Δn/Δk|&nbsp;≈&nbsp;125 with negligible insertion loss<a class="v ok" href="#V7">V7</a>. We pre-register kill conditions and define one decisive experiment: measuring Δn/Δk, open-circuit retention and write speed for a single proton-gated monolayer on one ring. Because copper-ion devices already combine low loss, multilevel storage and long projected retention, a proton-programmed weight is worth pursuing only if it offers a distinct advantage, most plausibly front-end fabrication compatibility, without losing on optical loss, write speed or retention.</p>
+<h2 id="abstract">1. Abstract</h2>
+<p class="wip-inline">WIP · draft 3 · pending human archive pass</p>
+<p>Storing neural-network weights directly in the optical layer of a photonic accelerator would remove the repeated weight fetch from electronic memory. Non-volatile photonic weights have been demonstrated on integrated waveguides using phase-change materials, ferroelectric barium titanate<a class="v ok" href="#V1">V1</a>, and copper-ion ferroionic two-dimensional heterostructures, one of which reports 8-bit storage with projected retention beyond ten years<a class="v ok" href="#V2">V2</a>. Separately, protons have been used to switch optical properties outside integrated photonics, in a thin-film proton pump<a class="v ok" href="#V3">V3</a> and in room-temperature protonation of vanadium dioxide<a class="v ok" href="#V4">V4</a>. In a targeted search we did not find a waveguide-integrated optical weight programmed by protons; the search scope is stated in Section 7, and absence from it is not proof of absence.</p>
+<p>We ask whether such a weight could exist, and decompose the question into six links that would all have to hold: a low-loss index response to proton doping, room-temperature reversibility, sufficient doping density, open-circuit retention, a sealed proton source, and no added background loss. For each link we give the nearest published evidence and its limits. None of the links has been demonstrated for protons in this configuration. The nearest evidence is mixed. Electrostatic gating of monolayer WS<sub>2</sub> on silicon nitride has produced |Δn/Δk|&nbsp;≈&nbsp;125<a class="v ok" href="#V7">V7</a>, and hydrogen plasma treatment can n-dope monolayer MoS<sub>2</sub><a class="v ok" href="#V8">V8</a>. Against this, heavy electron doping by intercalated lithium drives MoS<sub>2</sub> toward a metallic phase<a class="v ok" href="#V10">V10</a>, and a calculation suggests that hydrogen bound in monolayer MoS<sub>2</sub> has migration barriers above 1&nbsp;eV<a class="v ok" href="#V13">V13</a>, which, if borne out, would favour retention but work against room-temperature reversal.</p>
+<p>The first link is also the cheapest to test, on a flat substrate without a waveguide, and is bounded on both sides by known failure modes. We therefore present the work as a ladder of falsifiable steps rather than a design. Because copper-ion devices already combine low loss, multilevel storage and long projected retention, a proton weight would be worth building only if it offered a distinct advantage, most plausibly front-end fabrication compatibility; that advantage is itself an assumption to be tested.</p>
 
-<h2 id="ledger">Verification ledger</h2>
-<p class="legend"><span class="v ok">V</span> resolved: title, claimed authors and the specific claim confirmed on publisher, repository, preprint or institutional pages. <span class="v pend">V</span> resolved with a content caveat: the reference passes the DOI gate, but the claim as used carries a stated limitation. All entries still require the human archive pass.</p>
+<h2 id="method">2. How this document is built</h2>
+<p class="wip-inline">WIP</p>
+<p>The document follows one sequence, applied to a single hypothesis:</p>
+<ol class="flow">
+  <li>State the hypothesis as the claim that, if false, makes the work worthless (the Claim Block).</li>
+  <li>Break it into links that must all hold (Section 3).</li>
+  <li>For each link, record the nearest published evidence and how that evidence differs from the case in question: species of ion, doping mechanism, wavelength, and whether it was measured or calculated.</li>
+  <li>Record where links pull against each other (Section 4).</li>
+  <li>Choose the cheapest experiment that could falsify the most links at once (Section 5).</li>
+  <li>Resolve every reference to its title and claimed authors before it is cited (Section 6), and keep withdrawn or narrowed claims visible rather than deleting them (Section 7).</li>
+</ol>
+<p>This sequence is not offered as a new method. It draws on established practices such as pre-registration, kill criteria set before data, and structured evidence arguments. Its use here is a case study, and the proton hypothesis is the subject of that case study rather than a result.</p>
+<p><strong>Provenance.</strong> The literature search and drafting were AI-assisted. Most tombstones (T2, T4, T5, T6) record claims made during that drafting which were later narrowed or withdrawn when references were checked against publisher and repository records. They are kept because they show where unchecked claims entered and how they were caught.</p>
+<p><strong>Review status.</strong> One external AI review has assessed the framing of an earlier version. No independent review has yet tested the physics of the six links, the completeness of the search, or the evidence assigned to each link. Agreement with the structure is not evidence that the links are correctly stated.</p>
+
+<h2 id="links">3. The six links</h2>
+<p class="wip-inline">WIP · all six are open</p>
+<p>Each link is stated as what would have to be true, followed by the nearest evidence found and how that evidence differs from the case in question. Kill thresholds are to be set from the literature before any laboratory work, not after data arrive.</p>
+
+<div class="link" id="L1">
+  <h3>L1 · Low-loss index response <span class="status-open">open</span></h3>
+  <p><span class="label">Must be true</span>Proton doping of a TMD monolayer shifts its refractive index near 1550&nbsp;nm with |Δn/Δk| well above 10.</p>
+  <p><span class="label">Nearest evidence</span>Electrostatic gating of WS<sub>2</sub> on SiN gave |Δn/Δk|&nbsp;≈&nbsp;125 in the near infrared<a class="v ok" href="#V7">V7</a>. In MoS<sub>2</sub>, gated absorption stayed constant away from the exciton bands<a class="v pend" href="#V9">V9</a>. Hydrogen plasma n-dopes monolayer MoS<sub>2</sub><a class="v pend" href="#V8">V8</a>.</p>
+  <p><span class="label">How it differs</span>V7 and V9 are electrostatic, not proton doping; V9 was measured in the visible. V8 was observed through photoluminescence, not index or absorption. No measurement of proton-doped TMD optical constants near 1550&nbsp;nm was found.</p>
+</div>
+
+<div class="link" id="L2">
+  <h3>L2 · Room-temperature reversibility <span class="status-open">open</span></h3>
+  <p><span class="label">Must be true</span>Protons can be electrochemically added to and removed from the monolayer at room temperature.</p>
+  <p><span class="label">Nearest evidence</span>Hydrogen doping of MoS<sub>2</sub> was reversed, but by a chlorine plasma, not electrochemically<a class="v pend" href="#V8">V8</a>. A calculation finds hydrogen in monolayer MoS<sub>2</sub> stable as an interstitial or H–S adatom, with migration barriers above 1&nbsp;eV<a class="v pend" href="#V13">V13</a>.</p>
+  <p><span class="label">How it differs</span>V13 is a calculation for MoS<sub>2</sub> grown with incidental hydrogen; it does not model electrochemical removal. See tension A.</p>
+</div>
+
+<div class="link" id="L3">
+  <h3>L3 · Sufficient doping below the phase-change ceiling <span class="status-open">open</span></h3>
+  <p><span class="label">Must be true</span>A thin solid proton reservoir delivers enough carriers for a useful phase shift without driving the monolayer into a metallic phase.</p>
+  <p><span class="label">Nearest evidence</span>Lithium intercalation drives bulk MoS<sub>2</sub> from the semiconducting 2H to the metallic 1T structure<a class="v ok" href="#V10">V10</a>. Neighbouring layers change the threshold<a class="v pend" href="#V11">V11</a><a class="v pend" href="#V12">V12</a>.</p>
+  <p><span class="label">How it differs</span>All ceiling evidence is for lithium, mostly in bulk or few-layer material. Neither the carrier density needed for a useful phase shift nor the proton ceiling for a monolayer has been established here; both are desk-stage estimates still to be made.</p>
+</div>
+
+<div class="link" id="L4">
+  <h3>L4 · Open-circuit retention <span class="status-open">open</span></h3>
+  <p><span class="label">Must be true</span>The doped state holds without applied bias, next to an optical mode, for a useful time.</p>
+  <p><span class="label">Nearest evidence</span>Single-layer hBN as a proton-sieving electrolyte was reported to improve retention in proton electrochemical memory<a class="v ok" href="#V6">V6</a>. A proton pump retained an optical state at open circuit<a class="v ok" href="#V3">V3</a>.</p>
+  <p><span class="label">How it differs</span>V6 is an electronic device with a different geometry; V3 switches a metal film, not a TMD. Neither addresses a monolayer on a waveguide.</p>
+</div>
+
+<div class="link" id="L5">
+  <h3>L5 · Sealed proton source <span class="status-open">open</span></h3>
+  <p><span class="label">Must be true</span>Protons come from a sealed reservoir rather than ambient humidity.</p>
+  <p><span class="label">Nearest evidence</span>Both room-temperature proton-optics results in this ledger draw on water: the proton pump on ambient moisture<a class="v ok" href="#V3">V3</a>, the VO<sub>2</sub> device on a water-infiltrated glass gate<a class="v ok" href="#V4">V4</a>.</p>
+  <p><span class="label">How it differs</span>No sealed proton source for optical switching is in this ledger.</p>
+</div>
+
+<div class="link" id="L6">
+  <h3>L6 · No added background loss <span class="status-open">open</span></h3>
+  <p><span class="label">Must be true</span>Mobile hydrogen near the mode does not add significant absorption near 1550&nbsp;nm through bonded-hydrogen overtones or defects.</p>
+  <p><span class="label">Nearest evidence</span>None gated in this ledger yet. Sources on hydrogen-related absorption in silicon nitride and oxides near 1.5&nbsp;µm must pass the DOI gate before this link can cite them.</p>
+  <p><span class="label">How it differs</span>Not applicable until evidence is sourced.</p>
+</div>
+
+<h2 id="tensions">4. Stated tensions</h2>
+<p class="wip-inline">WIP</p>
+<p><strong>A. Retention against reversibility.</strong> If the calculated barriers of V13 apply to the device, hydrogen bound strongly enough to give retention (L4) may be too strongly bound to remove at room temperature (L2). If it leaves easily, it may not stay. The flat-substrate test must therefore measure reversal, not doping alone.</p>
+<p><strong>B. Stack order.</strong> A calculation suggests an hBN interface thermodynamically favours the metallic phase of lithium-intercalated MoS<sub>2</sub>, while the same authors hypothesise a counteracting barrier from the interface itself<a class="v pend" href="#V11">V11</a>. In a related lithium experiment, graphene–MoS<sub>2</sub> interfaces needed a 0.8&nbsp;V larger potential than hBN–MoS<sub>2</sub> interfaces to nucleate the metallic phase<a class="v pend" href="#V12">V12</a>. Whether this carries over to protons is unknown, but it suggests the layer against the TMD is a design choice with consequences for L3, not a neutral one.</p>
+<p><strong>C. The competing route.</strong> Copper-ion devices already deliver several of these links<a class="v ok" href="#V2">V2</a>. A proton route that only matches them adds nothing.</p>
+
+<h2 id="first-test">5. The cheapest first test</h2>
+<p class="wip-inline">WIP · design not yet drafted</p>
+<p>A TMD monolayer on a flat substrate, stepped through increasing proton loading and then back, with near-infrared reflectance or ellipsometry at each step. It addresses L1 and L2 together and probes the lower edge of L3. It needs no waveguide, sealing or retention measurement. If no window exists in which the index moves with little absorption and the change reverses, the remaining links need not be tested.</p>
+
+<h2 id="ledger">6. Verification ledger</h2>
+<p class="legend"><span class="v ok">V</span> resolved: title, claimed authors and the claim as used confirmed on publisher, repository, preprint or institutional pages. <span class="v pend">V</span> resolved with a content caveat that limits how far the source supports the use made of it. All entries still require the human archive pass.</p>
 <div class="table-wrap">
 <table>
-  <thead><tr><th>ID</th><th>Claim as used</th><th>Reference</th><th>Checked against</th><th>Open items</th><th>Status</th></tr></thead>
+  <thead><tr><th>ID</th><th>Claim as used</th><th>Reference</th><th>Evidence type and limits</th><th>Open items</th><th>Status</th></tr></thead>
   <tbody>
-    <tr id="V1">
-      <td class="id">V1</td>
-      <td>BaTiO<sub>3</sub> on silicon gives analogue, non-volatile phase tuning with no absorption change.</td>
-      <td>Geler-Kremer, J., Eltes, F., Stark, P., et al. A ferroelectric multilevel non-volatile photonic phase shifter. <em>Nature Photonics</em> 16, 491–497 (2022). doi:10.1038/s41566-022-01003-0</td>
-      <td>Publisher abstract page (title, lead authors, DOI, claim wording).</td>
-      <td>None for the claim as used.</td>
-      <td class="status ok">Resolved</td>
-    </tr>
-    <tr id="V2">
-      <td class="id">V2</td>
-      <td>Cu<sup>+</sup> ferroionic heterostructures give non-volatile phase modulation on SiN and Si microrings; one reports 8-bit storage and projected retention beyond ten years.</td>
-      <td>Singh, L., Guo, S., et al. Non-Volatile Phase Modulation with Ultralow Energy Consumption Enabled by 2D Ferroelectric/TMD Heterostructures. <em>Advanced Science</em> 13(13), e20795 (2026). doi:10.1002/advs.202520795<br><br>Tamalampudi, S. R., Taha, A., Serunjogi, S., Dushaq, G., Rasras, M. S. Nonvolatile Photonic Synapses Based on Ferroionic CuInP<sub>2</sub>S<sub>6</sub>–Silicon Microring Resonators. <em>Advanced Photonics Research</em> 7, e70244 (2026). doi:10.1002/adpr.70244</td>
-      <td>Publisher pages; full Singh et al. abstract via institutional repository (SUTD) and an indexing service; Tamalampudi author list from publisher page.</td>
-      <td>Author order beyond the first two differs between sources for Singh et al.; only the first two are claimed.</td>
-      <td class="status ok">Resolved</td>
-    </tr>
-    <tr id="V3">
-      <td class="id">V3</td>
-      <td>A solid-state proton pump gates optical properties and retains the state at open circuit.</td>
-      <td>Huang, M., Tan, A. J., Büttner, F., Liu, H., Ruan, Q., Hu, W., Mazzoli, C., Wilkins, S., Duan, C., Yang, J. K. W., Beach, G. S. D. Voltage-gated optics and plasmonics enabled by solid-state proton pumping. <em>Nature Communications</em> 10, 5030 (2019). doi:10.1038/s41467-019-13131-3</td>
-      <td>Publisher article, PMC record and multiple institutional repositories agree on authors, volume and DOI.</td>
-      <td>The proton source is ambient water; note this when contrasting with a sealed design.</td>
-      <td class="status ok">Resolved</td>
-    </tr>
-    <tr id="V4">
-      <td class="id">V4</td>
-      <td>Room-temperature, all-solid-state protonation switches VO<sub>2</sub> infrared transmittance non-volatilely.</td>
-      <td>Katase, T., Endo, K., Ohta, H. Infrared-transmittance tunable metal-insulator conversion device with thin-film-transistor-type structure on a glass substrate. <em>APL Materials</em> 5(5), 056105 (2017). doi:10.1063/1.4983276</td>
-      <td>Hokkaido University repository record and article PDF (title, authors, journal, DOI, abstract).</td>
-      <td>None for the claim as used.</td>
-      <td class="status ok">Resolved</td>
-    </tr>
-    <tr id="V5">
-      <td class="id">V5</td>
-      <td>In H<sub>x</sub>WO<sub>3</sub> and hydrogenated nickelates, proton loading is reported to change absorption alongside index.</td>
-      <td>Matsuura, S., Yamasaku, N., Nishijima, Y., Okazaki, S., Arakawa, T. Characteristics of Highly Sensitive Hydrogen Sensor Based on Pt-WO<sub>3</sub>/Si Microring Resonator. <em>Sensors</em> 20(1), 96 (2020). doi:10.3390/s20010096<br><br>Cao, X., Sun, J., Fang, Y., Qiao, X., Cai, S., Qiu, Y., Chen, X., Sun, Y., Huang, J., Ding, X., Sun, J., Wan, C., Zhang, Z. Electrically Controlled Metal-Insulator Heterogeneous Evolution for Infrared Switch and Perfect Absorption. <em>Advanced Science</em> (2025). doi:10.1002/advs.202416420</td>
-      <td>Publisher and PMC pages; institutional record for Cao et al. authors.</td>
-      <td>The Sensors paper tabulates WO<sub>3</sub>/H<sub>x</sub>WO<sub>3</sub> constants from earlier work and the wavelength is not stated in the table; trace those primary sources before quoting any value. Cao et al. report the joint reduction of both parts of the complex index at long-wave infrared, not 1550&nbsp;nm.</td>
-      <td class="status pend">Resolved, caveat</td>
-    </tr>
-    <tr id="V6">
-      <td class="id">V6</td>
-      <td>Single-layer hBN as a proton-sieving electrolyte improves retention and endurance in proton ECRAM.</td>
-      <td>Nikam, R. D., …, Hwang, H. Ionic Sieving Through One-Atom-Thick 2D Material Enables Analog Nonvolatile Memory for Neuromorphic Computing. <em>Small</em> 17 (2021). Preprint: arXiv:2109.14935</td>
-      <td>Preprint text (title, affiliations, claim); journal and year from the POSTECH faculty record; first and corresponding authors from author and faculty pages.</td>
-      <td>Journal article number and DOI to add. Only the first and corresponding authors are claimed.</td>
-      <td class="status ok">Resolved</td>
-    </tr>
-    <tr id="V7">
-      <td class="id">V7</td>
-      <td>Ionic-liquid-gated monolayer WS<sub>2</sub> on SiN: |Δn/Δk| ≈ 125 with negligible insertion loss.</td>
-      <td>Datta, I., Chae, S. H., Bhatt, G. R., Tadayon, M. A., Li, B., Yu, Y., Park, C., Park, J., Cao, L., Basov, D. N., Hone, J., Lipson, M. Low-loss composite photonic platform based on 2D semiconductor monolayers. <em>Nature Photonics</em> 14(4), 256–262 (2020).</td>
-      <td>Institutional research record (full authors, volume, issue, pages, abstract value) and the accepted manuscript (gating method).</td>
-      <td>DOI string to add.</td>
-      <td class="status ok">Resolved</td>
-    </tr>
+    <tr id="V1"><td class="id">V1</td><td>BaTiO<sub>3</sub> on silicon gives analogue, non-volatile phase tuning with no absorption change.</td><td>Geler-Kremer, J., Eltes, F., Stark, P., et al. A ferroelectric multilevel non-volatile photonic phase shifter. <em>Nature Photonics</em> 16, 491–497 (2022). doi:10.1038/s41566-022-01003-0</td><td>Measured; waveguide device.</td><td>None.</td><td class="status ok">Resolved</td></tr>
+    <tr id="V2"><td class="id">V2</td><td>Cu<sup>+</sup> ferroionic heterostructures give non-volatile phase modulation on SiN and Si microrings; one reports 8-bit storage and projected retention beyond ten years.</td><td>Singh, L., Guo, S., et al. Non-Volatile Phase Modulation with Ultralow Energy Consumption Enabled by 2D Ferroelectric/TMD Heterostructures. <em>Advanced Science</em> 13(13), e20795 (2026). doi:10.1002/advs.202520795<br><br>Tamalampudi, S. R., Taha, A., Serunjogi, S., Dushaq, G., Rasras, M. S. Nonvolatile Photonic Synapses Based on Ferroionic CuInP<sub>2</sub>S<sub>6</sub>–Silicon Microring Resonators. <em>Advanced Photonics Research</em> 7, e70244 (2026). doi:10.1002/adpr.70244</td><td>Measured; retention is projected, not measured over ten years.</td><td>Only the first two Singh et al. authors are claimed.</td><td class="status ok">Resolved</td></tr>
+    <tr id="V3"><td class="id">V3</td><td>A solid-state proton pump gates optical properties and retains the state at open circuit; the proton source is ambient water.</td><td>Huang, M., Tan, A. J., Büttner, F., Liu, H., Ruan, Q., Hu, W., Mazzoli, C., Wilkins, S., Duan, C., Yang, J. K. W., Beach, G. S. D. Voltage-gated optics and plasmonics enabled by solid-state proton pumping. <em>Nature Communications</em> 10, 5030 (2019). doi:10.1038/s41467-019-13131-3</td><td>Measured; metal films, not a TMD.</td><td>None.</td><td class="status ok">Resolved</td></tr>
+    <tr id="V4"><td class="id">V4</td><td>Room-temperature, all-solid-state protonation switches VO<sub>2</sub> infrared transmittance non-volatilely, using a water-infiltrated glass gate.</td><td>Katase, T., Endo, K., Ohta, H. Infrared-transmittance tunable metal-insulator conversion device with thin-film-transistor-type structure on a glass substrate. <em>APL Materials</em> 5(5), 056105 (2017). doi:10.1063/1.4983276</td><td>Measured; amplitude switching via a metal–insulator transition.</td><td>None.</td><td class="status ok">Resolved</td></tr>
+    <tr id="V5"><td class="id">V5</td><td>In H<sub>x</sub>WO<sub>3</sub> and hydrogenated nickelates, proton loading is reported to change absorption alongside index.</td><td>Matsuura, S., Yamasaku, N., Nishijima, Y., Okazaki, S., Arakawa, T. Characteristics of Highly Sensitive Hydrogen Sensor Based on Pt-WO<sub>3</sub>/Si Microring Resonator. <em>Sensors</em> 20(1), 96 (2020). doi:10.3390/s20010096<br><br>Cao, X., Sun, J., Fang, Y., Qiao, X., Cai, S., Qiu, Y., Chen, X., Sun, Y., Huang, J., Ding, X., Sun, J., Wan, C., Zhang, Z. Electrically Controlled Metal-Insulator Heterogeneous Evolution for Infrared Switch and Perfect Absorption. <em>Advanced Science</em> (2025). doi:10.1002/advs.202416420</td><td>WO<sub>3</sub> constants are tabulated from earlier work with wavelength unstated; nickelate data are long-wave infrared.</td><td>Trace WO<sub>3</sub> primary sources before quoting any value. No longer cited in the abstract.</td><td class="status pend">Resolved, caveat</td></tr>
+    <tr id="V6"><td class="id">V6</td><td>Single-layer hBN as a proton-sieving electrolyte improves retention and endurance in proton ECRAM.</td><td>Nikam, R. D., …, Hwang, H. Ionic Sieving Through One-Atom-Thick 2D Material Enables Analog Nonvolatile Memory for Neuromorphic Computing. <em>Small</em> 17 (2021). Preprint: arXiv:2109.14935</td><td>Measured; electronic device.</td><td>Article number and DOI to add.</td><td class="status ok">Resolved</td></tr>
+    <tr id="V7"><td class="id">V7</td><td>Electrostatically gated monolayer WS<sub>2</sub> on SiN: |Δn/Δk| ≈ 125 in the near infrared with negligible insertion loss.</td><td>Datta, I., Chae, S. H., Bhatt, G. R., Tadayon, M. A., Li, B., Yu, Y., Park, C., Park, J., Cao, L., Basov, D. N., Hone, J., Lipson, M. Low-loss composite photonic platform based on 2D semiconductor monolayers. <em>Nature Photonics</em> 14(4), 256–262 (2020).</td><td>Measured; ionic-liquid electrostatic gating, not proton doping; volatile.</td><td>DOI string to add.</td><td class="status ok">Resolved</td></tr>
+    <tr id="V8"><td class="id">V8</td><td>Hydrogen plasma n-dopes monolayer MoS<sub>2</sub>; the doping was reversed by chlorine plasma.</td><td>Kim, Y., Jhon, Y. I., Park, J., Kim, C., Lee, S., Jhon, Y. M. Plasma functionalization for cyclic transition between neutral and charged excitons in monolayer MoS<sub>2</sub>. <em>Scientific Reports</em> 6 (2016). doi:10.1038/srep21405</td><td>Measured by photoluminescence; plasma chemistry, not electrochemistry; no near-infrared index data.</td><td>None for the claim as used.</td><td class="status pend">Resolved, caveat</td></tr>
+    <tr id="V9"><td class="id">V9</td><td>In gated monolayer MoS<sub>2</sub>, absorption was constant away from the A and B exciton bands.</td><td>Kravets, V. G., Wu, F., Auton, G. H., Yu, T., Imaizumi, S., Grigorenko, A. N. Measurements of electrically tunable refractive index of MoS<sub>2</sub> monolayer and its usage in optical modulators. <em>npj 2D Materials and Applications</em> 3, 36 (2019). doi:10.1038/s41699-019-0119-1</td><td>Measured; electrostatic gating; visible range, not 1550&nbsp;nm.</td><td>None for the claim as used.</td><td class="status pend">Resolved, caveat</td></tr>
+    <tr id="V10"><td class="id">V10</td><td>Lithium intercalation drives MoS<sub>2</sub> from the 2H to the 1T structure.</td><td>Py, M. A., Haering, R. R. Structural destabilization induced by lithium intercalation in MoS<sub>2</sub> and related compounds. <em>Canadian Journal of Physics</em> 61(1), 76–84 (1983). doi:10.1139/p83-013</td><td>Measured (in situ X-ray diffraction); lithium; bulk.</td><td>None for the claim as used.</td><td class="status ok">Resolved</td></tr>
+    <tr id="V11"><td class="id">V11</td><td>Calculation: an hBN interface thermodynamically favours the 1T phase of Li-intercalated MoS<sub>2</sub>; the authors hypothesise a counteracting interfacial barrier.</td><td>Yazdani, S., Pondick, J. V., Kumar, A., Yarali, M., Woods, J. M., Hynek, D. J., Qiu, D. Y., Cha, J. J. Heterointerface Effects on Lithium-Induced Phase Transitions in Intercalated MoS<sub>2</sub>. <em>ACS Applied Materials &amp; Interfaces</em> 13(8) (2021). Preprint: arXiv:2011.13825</td><td>Calculation plus experiment; lithium; the barrier is a hypothesis.</td><td>DOI string to add.</td><td class="status pend">Resolved, caveat</td></tr>
+    <tr id="V12"><td class="id">V12</td><td>With lithium, graphene–MoS<sub>2</sub> interfaces needed 0.8&nbsp;V more potential than hBN–MoS<sub>2</sub> interfaces to nucleate the metallic phase.</td><td>Pondick, J. V., Kumar, A., Wang, M., Yazdani, S., Woods, J. M., Qiu, D. Y., Cha, J. J. Heterointerface Control over Lithium-Induced Phase Transitions in MoS<sub>2</sub> Nanosheets: Implications for Nanoscaled Energy Materials. <em>ACS Applied Nano Materials</em> 4(12) (2021). doi:10.1021/acsanm.1c03402</td><td>Measured; lithium; nanosheets.</td><td>None for the claim as used.</td><td class="status pend">Resolved, caveat</td></tr>
+    <tr id="V13"><td class="id">V13</td><td>Calculation: hydrogen in monolayer MoS<sub>2</sub> is stable as an interstitial or H–S adatom, acts as a shallow donor, and has migration barriers above 1&nbsp;eV.</td><td>Singh, A., Singh, A. K. Origin of n-type conductivity of monolayer MoS<sub>2</sub>. <em>Physical Review B</em> 99(12) (2019).</td><td>Calculation (hybrid DFT); the donor result is conditional on sulfur-rich growth; does not model electrochemical removal.</td><td>DOI string and article number to add.</td><td class="status pend">Resolved, caveat</td></tr>
   </tbody>
 </table>
 </div>
 
-<h2 id="tombstones">Tombstones</h2>
+<h2 id="tombstones">7. Tombstones and search scope</h2>
 <p>Claims made during drafting that were withdrawn or narrowed. They stay visible rather than being silently corrected.</p>
-<div class="tomb">
-  <p class="id">T1 · narrowed</p>
-  <p><span class="struck">A 2026 review characterizes near-infrared electrochemical modulation in general as amplitude-dominant.</span> The source sentence describes one device class (electrochemical doping near an epsilon-near-zero condition), not the field. Replaced by the host-specific claim in V5.</p>
-</div>
-<div class="tomb">
-  <p class="id">T2 · withdrawn</p>
-  <p><span class="struck">No one has combined ionic storage with a low-loss 2D optical layer on a waveguide.</span> Falsified by V2. The surviving gap is protons specifically.</p>
-</div>
-<div class="tomb">
-  <p class="id">T3 · excluded</p>
-  <p><span class="struck">Monolayer WS<sub>2</sub> shows Δn = 0.53 with Δk = 0.004.</span> Seen only in a secondary review and not confirmed in the primary paper. Only the primary abstract value is used.</p>
-</div>
-<div class="tomb">
-  <p class="id">T4 · withdrawn</p>
-  <p><span class="struck">Copper-ion ferroionic weights write slowly, so protons would win on write speed.</span> The slow resonance shift belongs to one lateral-migration microring device (Tamalampudi et al.). The vertical heterostructure of Singh et al. is not slow in the same way, so write speed is no longer claimed as the proton advantage.</p>
-</div>
+<div class="tomb"><p class="id">T1 · narrowed</p><p><span class="struck">A 2026 review characterizes near-infrared electrochemical modulation in general as amplitude-dominant.</span> The source sentence describes one device class. Replaced by the host-specific claim in V5.</p></div>
+<div class="tomb"><p class="id">T2 · withdrawn</p><p><span class="struck">No one has combined ionic storage with a low-loss 2D optical layer on a waveguide.</span> Falsified by V2. The surviving gap is protons specifically.</p></div>
+<div class="tomb"><p class="id">T3 · excluded</p><p><span class="struck">Monolayer WS<sub>2</sub> shows Δn = 0.53 with Δk = 0.004.</span> Seen only in a secondary review. Only the primary abstract value is used.</p></div>
+<div class="tomb"><p class="id">T4 · withdrawn</p><p><span class="struck">Copper-ion ferroionic weights write slowly, so protons would win on write speed.</span> The slow shift belongs to one lateral-migration device; write speed is no longer claimed as the proton advantage.</p></div>
+<div class="tomb"><p class="id">T5 · narrowed</p><p><span class="struck">An hBN interface makes the lossy phase transition easier.</span> That was the calculation only. The same authors hypothesise a counteracting barrier (V11), and the experimental comparison (V12) is relative to graphene and for lithium. Restated as tension B.</p></div>
+<div class="tomb"><p class="id">T6 · withdrawn</p><p><span class="struck">Hydrogen impurities are proposed as an origin of unintentional doping in TMDs</span> (citing a 2017 <em>Nanoscale</em> paper). That paper places the hydrogen in the underlying SiO<sub>2</sub>, not the TMD, and its authors were not resolved. Replaced by V13.</p></div>
+<div class="tomb"><p class="id">T7 · excluded</p><p>A 2025 paper on electrochemical proton intercalation stabilising metallic 1T MoS<sub>2</sub> for catalysis. Its authors could not be resolved, so it is not used. V10 covers the phase-transition point.</p></div>
+<p><strong>Search scope.</strong> Searches were run within AI-assisted sessions using general web search: English-language sources plus targeted regional passes on Korea, Japan, China and Europe, and a targeted pass on hydrogen and proton doping of TMDs. Patent databases and non-English full texts were not searched systematically. The gap claim holds only within this scope.</p>
 
-<h2 id="revisions">Revision log</h2>
+<h2 id="revisions">8. Revision log</h2>
 <ul class="log">
-  <li><strong>0.2</strong>: all references resolved to title and claimed authors. V5 nickelate source replaced: the earlier review could not be resolved to its authors, so a primary paper with a confirmed author list is used instead, and the abstract now states the long-wave-infrared limitation. V2 expanded with the Singh et al. retention and multilevel result. Final sentence of the abstract revised after T4. Author name and affiliation removed.</li>
+  <li><strong>0.4</strong>: added a framing statement and Section 2 (how the document is built, provenance, review status) after an external review of the framing. The sequence is described as a case study drawing on existing practice, not as a new method. Sections renumbered. The work-in-progress banner is kept.</li>
+  <li><strong>0.3</strong>: reframed from a device proposal to a decomposed hypothesis; new title. Added six links, stated tensions and the cheapest first test. Added V8–V13 after the DOI gate; added T5–T7. Abstract rewritten to separate lithium, electrostatic, visible-range and calculated evidence from the proton case.</li>
+  <li><strong>0.2</strong>: all references resolved; V5 source replaced; V2 expanded; T4 added; author name and affiliation removed.</li>
   <li><strong>0.1</strong>: abstract, Claim Block and initial ledger.</li>
 </ul>
 
-<h2 id="outline">Planned structure</h2>
-<p class="wip-inline">WIP · sections below are not yet drafted</p>
+<h2 id="outline">9. Planned sections</h2>
+<p class="wip-inline">WIP · not yet drafted</p>
 <ol class="outline">
-  <li>Introduction: the weight-fetch problem and in-place optical weights <span class="state">(not drafted)</span></li>
-  <li>Existing non-volatile photonic weight families and their limits <span class="state">(not drafted)</span></li>
-  <li>Proton optics outside integrated photonics <span class="state">(not drafted)</span></li>
-  <li>Why direct proton films fail, and the split architecture <span class="state">(not drafted)</span></li>
-  <li>Pre-registered kill conditions <span class="state">(not drafted)</span></li>
-  <li>The decisive experiment <span class="state">(not drafted)</span></li>
-  <li>Comparison frame against existing routes <span class="state">(not drafted)</span></li>
-  <li>Search scope and its limits <span class="state">(not drafted)</span></li>
-  <li>References <span class="state">(each must pass the DOI gate)</span></li>
+  <li>Introduction: the weight-fetch problem <span class="state">(not drafted)</span></li>
+  <li>Existing non-volatile photonic weight families <span class="state">(not drafted)</span></li>
+  <li>Desk-stage estimates for L3: required carrier density and phase-transition ceiling <span class="state">(not drafted)</span></li>
+  <li>Sourcing for L6 <span class="state">(not started)</span></li>
+  <li>Kill thresholds for each link, set before any laboratory work <span class="state">(not drafted)</span></li>
+  <li>Design of the flat-substrate first test <span class="state">(not drafted)</span></li>
 </ol>
 
 <footer>
-  <p>Work in progress. Pre-experimental; no device data. Literature values are not results of this work.</p>
+  <p>Work in progress. Pre-experimental; no device data. A decomposition of an untested hypothesis, not a claim that it holds.</p>
 </footer>
 
 </main>
